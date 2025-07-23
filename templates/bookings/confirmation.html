@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section class="bg-blue-900 text-white py-20">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Booking Confirmed!</h1>
+        <p class="text-xl">Thank you for choosing Luxury Car Rentals</p>
+    </div>
+</section>
+
+<section class="py-16">
+    <div class="container mx-auto px-4 max-w-3xl">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <!-- Confirmation Header -->
+            <div class="bg-green-100 px-6 py-4 border-b border-green-200">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-check-circle text-green-600 text-3xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h2 class="text-xl font-bold text-green-800">Booking #{{ booking.id }} Confirmed</h2>
+                        <p class="text-green-600">We've sent a confirmation to {{ booking.user.email }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Confirmation Content -->
+            <div class="p-6">
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold mb-2">Your booking is confirmed</h3>
+                    <p class="text-gray-600 max-w-lg mx-auto">We're preparing everything for your rental. Below are the details of your booking.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <!-- Car Summary -->
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-bold mb-4">Car Summary</h4>
+                        <div class="flex items-start mb-4">
+                            <img src="{{ booking.car.image.url }}" alt="{{ booking.car.model }}" class="w-20 h-14 object-cover rounded mr-4">
+                            <div>
+                                <h5 class="font-bold">{{ booking.car.model }}</h5>
+                                <p class="text-gray-600 text-sm">{{ booking.car.get_car_type_display }}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Daily Rate:</span>
+                                <span>₹{{ booking.car.price_per_day }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Rental Days:</span>
+                                <span>{{ duration }} day{{ duration|pluralize }}</span>
+                            </div>
+                            <div class="flex justify-between font-bold border-t pt-2 mt-2">
+                                <span>Total Price:</span>
+                                <span>₹{{ booking.total_price }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pickup Information -->
+                    <div class="border rounded-lg p-4">
+                        <h4 class="font-bold mb-4">Pickup Information</h4>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <p class="text-gray-600">Pickup Location</p>
+                                <p class="font-medium">{{ booking.pickup_city }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Pickup Date</p>
+                                <p class="font-medium">{{ booking.start_date|date:"F j, Y" }}</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Return Date</p>
+                                <p class="font-medium">{{ booking.end_date|date:"F j, Y" }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Next Steps -->
+                <div class="bg-blue-50 p-4 rounded-lg mb-8">
+                    <h4 class="font-bold mb-3">What's Next?</h4>
+                    <ul class="list-disc pl-5 space-y-2 text-sm">
+                        <li>You'll receive a confirmation email with all the details</li>
+                        <li>Our team will contact you within 24 hours to confirm pickup arrangements</li>
+                        <li>Please bring your driver's license and payment method when picking up the car</li>
+                    </ul>
+                </div>
+                
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                    <a href="{% url 'manage_bookings' %}" class="bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300 text-center">View My Bookings</a>
+                    <a href="{% url 'car_list' %}" class="bg-white border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg hover:bg-blue-50 transition duration-300 text-center">Book Another Car</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,312 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Premium luxury car rental service">
+    <meta name="keywords" content="luxury cars, car rental, wedding cars, premium vehicles">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LUXURY MOTORS | Premium Rentals{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Cinzel:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rich-black: #0a0a0a;
+            --gold: #c5a059;
+            --light-gold: #e6d5a8;
+            --dark-charcoal: #1e1e1e;
+            --silver: #e5e5e5;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fafafa;
+            color: var(--rich-black);
+        }
+        .luxury-nav {
+            background: var(--rich-black);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+        }
+        .brand-font {
+            font-family: 'Cinzel', serif;
+            letter-spacing: 1px;
+        }
+        .gold-accent {
+            color: var(--gold);
+        }
+        .gold-hover:hover {
+            color: var(--light-gold);
+        }
+        .btn-luxury {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--light-gold) 100%);
+            color: var(--rich-black);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .btn-luxury:hover {
+            background: linear-gradient(135deg, var(--light-gold) 0%, var(--gold) 100%);
+            box-shadow: 0 4px 20px rgba(197, 160, 89, 0.4);
+            transform: translateY(-1px);
+        }
+        .footer-bg {
+            background: var(--rich-black);
+            border-top: 1px solid rgba(197, 160, 89, 0.3);
+        }
+        .mobile-menu {
+            background: var(--dark-charcoal);
+            box-shadow: inset 0 4px 30px rgba(0, 0, 0, 0.4);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--gold);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        .section-divider {
+            border-top: 1px solid rgba(197, 160, 89, 0.2);
+            border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="antialiased">
+    <!-- Navigation -->
+    <nav class="luxury-nav fixed w-full z-50">
+        <div class="max-w-8xl mx-auto px-6">
+            <div class="flex justify-between h-24 items-center">
+                <!-- Logo/Brand -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="{% url 'home' %}" class="flex items-center group">
+                        <span class="text-2xl font-bold text-white brand-font group-hover:gold-accent transition-colors duration-300">
+                            LUXURY<span class="gold-accent">MOTORS</span>
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex items-center space-x-8">
+                    <a href="{% url 'home' %}" class="nav-link text-white px-1 py-2 text-sm uppercase tracking-wider font-medium gold-hover">
+                        <i class="fas fa-home mr-2"></i>Home
+                    </a>
+                    <a href="{% url 'about' %}" class="nav-link text-white px-1 py-2 text-sm uppercase tracking-wider font-medium gold-hover">
+                        <i class="fas fa-crown mr-2"></i>About
+                    </a>
+                    <a href="{% url 'services' %}" class="nav-link text-white px-1 py-2 text-sm uppercase tracking-wider font-medium gold-hover">
+                        <i class="fas fa-concierge-bell mr-2"></i>Services
+                    </a>
+                    <a href="{% url 'car_list' %}" class="nav-link text-white px-1 py-2 text-sm uppercase tracking-wider font-medium gold-hover">
+                        <i class="fas fa-car mr-2"></i>Our Fleet
+                    </a>
+                    <a href="{% url 'contact' %}" class="nav-link text-white px-1 py-2 text-sm uppercase tracking-wider font-medium gold-hover">
+                        <i class="fas fa-phone-alt mr-2"></i>Contact
+                    </a>
+                </div>
+
+                <!-- Auth Buttons -->
+                <div class="hidden lg:flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium transition duration-300 flex items-center">
+                            <i class="fas fa-user-circle mr-2 gold-accent"></i>{{ user.username }}
+                        </a>
+                        <a href="{% url 'booking_list' %}" class="btn-luxury px-5 py-2 rounded-sm text-sm font-medium">
+                            <i class="fas fa-calendar-check mr-2"></i>My Bookings
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-white hover:text-gray-300 px-3 py-2 text-sm font-medium transition duration-300">
+                            Sign In
+                        </a>
+                        <a href="{% url 'register' %}" class="btn-luxury px-5 py-2 rounded-sm text-sm font-medium">
+                            Register
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button class="outline-none text-white focus:outline-none">
+                        <svg class="w-8 h-8 gold-hover" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24">
+        {% block content %}
+        <!-- Content will be injected here -->
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-bg text-white pt-20 pb-12">
+        <div class="max-w-8xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- About Column -->
+                <div class="space-y-6">
+                    <h3 class="text-xl font-bold tracking-wider brand-font gold-accent">LUXURY MOTORS</h3>
+                    <p class="text-gray-400 leading-relaxed">
+                        Elevating your journey with the world's most prestigious vehicles. Experience unparalleled luxury and service.
+                    </p>
+                    <div class="flex space-x-4 pt-2">
+                        <a href="https://www.facebook.com/nagasai.ramulapalli" class="text-gray-400 hover:text-white text-lg transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://x.com/Lakshmanyadav__" class="text-gray-400 hover:text-white text-lg transition duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.instagram.com/lakshman_ramulapalli?igsh=ZTlheWR0dmdjNGpv" class="text-gray-400 hover:text-white text-lg transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ramulapallilakshman" class="text-gray-400 hover:text-white text-lg transition duration-300">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-6 uppercase tracking-wider gold-accent brand-font">Explore</h4>
+                    <ul class="space-y-3">
+                        <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Home
+                        </a></li>
+                        <li><a href="{% url 'about' %}" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            About Us
+                        </a></li>
+                        <li><a href="{% url 'services' %}" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Services
+                        </a></li>
+                        <li><a href="{% url 'car_list' %}" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Our Fleet
+                        </a></li>
+                        <li><a href="{% url 'contact' %}" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Contact
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Services -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-6 uppercase tracking-wider gold-accent brand-font">Services</h4>
+                    <ul class="space-y-3">
+                        <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Wedding Car Hire
+                        </a></li>
+                        <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Corporate Events
+                        </a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Airport Transfers
+                        </a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Luxury Tours
+                        </a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white flex items-center transition duration-300 group">
+                            <span class="w-2 h-2 bg-gold mr-3 opacity-0 group-hover:opacity-100 transition duration-300"></span>
+                            Chauffeur Service
+                        </a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-6 uppercase tracking-wider gold-accent brand-font">Contact Us</h4>
+                    <address class="text-gray-400 not-italic space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-4 gold-accent"></i>
+                            <span>123 Prestige Avenue<br>Vijayawada, AP 520001</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone-alt mr-4 gold-accent"></i>
+                            <span>+91 7889125662</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope mr-4 gold-accent"></i>
+                            <span>contact@luxurymotors.com</span>
+                        </div>
+                    </address>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="section-divider mt-16 pt-8 text-center">
+                <p class="text-sm text-gray-500">
+                    &copy; 2025 LUXURY MOTORS. All rights reserved. | Crafted with <i class="fas fa-heart text-red-400"></i> by Lakshman
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.lg\\:hidden button');
+        const mobileMenu = document.createElement('div');
+        mobileMenu.className = 'mobile-menu fixed inset-0 z-40 pt-24 hidden';
+        mobileMenu.innerHTML = `
+            <div class="px-8 py-6 space-y-6">
+                <a href="{% url 'home' %}" class="block text-white py-3 px-4 hover:bg-gray-800 rounded transition duration-300">
+                    <i class="fas fa-home mr-3 gold-accent"></i>Home
+                </a>
+                <a href="{% url 'about' %}" class="block text-white py-3 px-4 hover:bg-gray-800 rounded transition duration-300">
+                    <i class="fas fa-crown mr-3 gold-accent"></i>About
+                </a>
+                <a href="{% url 'services' %}" class="block text-white py-3 px-4 hover:bg-gray-800 rounded transition duration-300">
+                    <i class="fas fa-concierge-bell mr-3 gold-accent"></i>Services
+                </a>
+                <a href="{% url 'car_list' %}" class="block text-white py-3 px-4 hover:bg-gray-800 rounded transition duration-300">
+                    <i class="fas fa-car mr-3 gold-accent"></i>Our Fleet
+                </a>
+                <a href="{% url 'contact' %}" class="block text-white py-3 px-4 hover:bg-gray-800 rounded transition duration-300">
+                    <i class="fas fa-phone-alt mr-3 gold-accent"></i>Contact
+                </a>
+                <div class="pt-4 border-t border-gray-700">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}" class="block text-white py-3 px-4 hover:bg-gray-800 rounded transition duration-300">
+                            <i class="fas fa-user-circle mr-3 gold-accent"></i>Profile
+                        </a>
+                        <a href="{% url 'booking_list' %}" class="block btn-luxury text-center py-3 px-4 rounded transition duration-300 mt-2">
+                            <i class="fas fa-calendar-check mr-2"></i>My Bookings
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="block text-white py-3 px-4 hover:bg-gray-800 rounded transition duration-300">
+                            <i class="fas fa-sign-in-alt mr-3 gold-accent"></i>Sign In
+                        </a>
+                        <a href="{% url 'register' %}" class="block btn-luxury text-center py-3 px-4 rounded transition duration-300 mt-2">
+                            <i class="fas fa-user-plus mr-2"></i>Register
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        `;
+        document.body.appendChild(mobileMenu);
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            document.body.style.overflow = mobileMenu.classList.contains('hidden') ? 'auto' : 'hidden';
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

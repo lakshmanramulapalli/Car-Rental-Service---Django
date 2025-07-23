@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section with Full-Width Image Background -->
+<section class="relative h-screen flex items-center">
+    <!-- Background Image with Reduced Intensity -->
+    <div class="absolute inset-0 overflow-hidden">
+        <div class="flex h-full transition-transform duration-1000 ease-in-out" id="carousel-container">
+            <div class="min-w-full h-full">
+                <img src="{% static 'image/car_img2.jpg' %}" alt="Luxury Car 1" class="w-full h-full object-cover opacity-200">
+            </div>
+            <div class="min-w-full h-full">
+                <img src="{% static 'image/car_img1.jpg' %}" alt="Luxury Car 2" class="w-full h-full object-cover opacity-200">
+            </div>
+            <div class="min-w-full h-full">
+                <img src="{% static 'image/car_img3.jpg' %}" alt="Luxury Car 3" class="w-full h-full object-cover opacity-200">
+            </div>
+            <div class="min-w-full h-full">
+                <img src="{% static 'image/carimage1.jpg' %}" alt="Luxury Car 4" class="w-full h-full object-cover opacity-200">
+            </div>
+        </div>
+    </div>
+
+    <!-- Text Content Overlay -->
+    <div class="container mx-auto px-4 relative z-10">
+    <div class="max-w-2xl backdrop-blur-sm bg-black/40 p-8 rounded-xl border border-white/10">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6 font-serif tracking-tight">
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-200">
+                Premium Car Rentals
+            </span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 font-light text-white/90 leading-relaxed">
+            Experience unmatched luxury with our premium fleet, available in India’s most distinguished cities.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+            <a href="{% url 'car_list' %}"
+               class="bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg shadow-amber-500/20">
+                Book Now
+            </a>
+            <a href="{% url 'car_list' %}"
+               class="border-2 border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-lg transition-all duration-300">
+                Explore Fleet
+            </a>
+        </div>
+    </div>
+</div>
+
+    <!-- Carousel Indicators -->
+    <div class="absolute bottom-8 left-0 right-0 flex justify-center space-x-2 z-10">
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 carousel-indicator" data-index="0"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 carousel-indicator" data-index="1"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 carousel-indicator" data-index="2"></button>
+        <button class="w-3 h-3 rounded-full bg-white bg-opacity-50 carousel-indicator" data-index="3"></button>
+    </div>
+</section>
+
+<!-- Featured Cars -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Featured Cars</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for car in featured_cars %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <img src="{{ car.image.url }}" alt="{{ car.model }}" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">{{ car.model }}</h3>
+                    <div class="flex justify-between mb-4">
+                        <span class="text-gray-600">{{ car.get_car_type_display }}</span>
+                        <span class="font-bold">₹{{ car.price_per_day }}/day</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">{{ car.description|truncatewords:15 }}</p>
+                    <a href="{% url 'car_detail' car.id %}" class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300">Book Now</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-8">
+            <a href="{% url 'car_list' %}" class="inline-block border-2 border-blue-600 text-blue-600 font-bold py-2 px-6 rounded-lg hover:bg-blue-600 hover:text-white transition duration-300">View All Cars</a>
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced Services Section -->
+<section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Our Services</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition duration-300">
+                <div class="text-blue-600 text-4xl mb-4">
+                    <i class="fas fa-car-side"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Self-Drive Rentals</h3>
+                <p class="text-gray-600">Flexible car rentals with unlimited mileage options and 24/7 roadside assistance.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition duration-300">
+                <div class="text-blue-600 text-4xl mb-4">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Chauffeur Services</h3>
+                <p class="text-gray-600">Professional drivers for business meetings, airport transfers, and special events.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition duration-300">
+                <div class="text-blue-600 text-4xl mb-4">
+                    <i class="fas fa-ring"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Wedding Packages</h3>
+                <p class="text-gray-600">Luxury wedding cars with floral decorations and premium service for your big day.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md text-center hover:shadow-xl transition duration-300">
+                <div class="text-blue-600 text-4xl mb-4">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Corporate Fleet</h3>
+                <p class="text-gray-600">Customized solutions for businesses with monthly billing and multiple vehicle options.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced Testimonials Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mr-4">
+                        <i class="fas fa-user text-gray-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Rahul Sharma</h4>
+                        <p class="text-gray-600 text-sm">Business Executive, Delhi</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">"The chauffeur service was exceptional. Always on time and the cars were spotless. Perfect for my business meetings."</p>
+                <div class="flex text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mr-4">
+                        <i class="fas fa-user text-gray-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Priya Patel</h4>
+                        <p class="text-gray-600 text-sm">Wedding Client, Mumbai</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">"Our wedding car was absolutely stunning! The team went above and beyond to make our day special."</p>
+                <div class="flex text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mr-4">
+                        <i class="fas fa-user text-gray-500"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold">David Wilson</h4>
+                        <p class="text-gray-600 text-sm">Tourist, UK</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">"Renting a car was seamless. Great selection of vehicles and excellent customer service throughout our trip."</p>
+                <div class="flex text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced FAQ Section -->
+<section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+        <div class="max-w-3xl mx-auto">
+            <div class="mb-4">
+                <button class="faq-question w-full text-left bg-white p-4 rounded-lg shadow-md hover:bg-gray-50 transition duration-300 font-bold">
+                    What documents do I need to rent a car?
+                    <i class="fas fa-chevron-down float-right transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer hidden bg-white p-4 rounded-b-lg shadow-md mt-1">
+                    <p>You'll need a valid driver's license, government-issued ID proof, and a credit card for security deposit. International renters need an International Driving Permit.</p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <button class="faq-question w-full text-left bg-white p-4 rounded-lg shadow-md hover:bg-gray-50 transition duration-300 font-bold">
+                    Is there a minimum rental period?
+                    <i class="fas fa-chevron-down float-right transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer hidden bg-white p-4 rounded-b-lg shadow-md mt-1">
+                    <p>Our minimum rental period is 24 hours. For special events like weddings, we offer hourly packages with a 4-hour minimum.</p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <button class="faq-question w-full text-left bg-white p-4 rounded-lg shadow-md hover:bg-gray-50 transition duration-300 font-bold">
+                    What's included in the rental price?
+                    <i class="fas fa-chevron-down float-right transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer hidden bg-white p-4 rounded-b-lg shadow-md mt-1">
+                    <p>The rental price includes comprehensive insurance, 24/7 roadside assistance, and unlimited mileage. Fuel and tolls are the renter's responsibility.</p>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <button class="faq-question w-full text-left bg-white p-4 rounded-lg shadow-md hover:bg-gray-50 transition duration-300 font-bold">
+                    Can I cancel or modify my booking?
+                    <i class="fas fa-chevron-down float-right transform transition-transform duration-300"></i>
+                </button>
+                <div class="faq-answer hidden bg-white p-4 rounded-b-lg shadow-md mt-1">
+                    <p>Yes, you can cancel or modify your booking up to 24 hours before pickup without penalty. Late cancellations may incur a fee.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .carousel-indicator.active {
+        background-color: white;
+        opacity: 1;
+    }
+</style>
+
+<script>
+    // Auto-scrolling Carousel
+    document.addEventListener('DOMContentLoaded', function() {
+        const carousel = document.getElementById('carousel-container');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        let currentIndex = 0;
+        const totalSlides = indicators.length;
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                if (index === currentIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        // Auto-scroll every 5 seconds
+        let interval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        }, 5000);
+
+        // Manual navigation with indicators
+        indicators.forEach(indicator => {
+            indicator.addEventListener('click', () => {
+                currentIndex = parseInt(indicator.dataset.index);
+                updateCarousel();
+                // Reset the auto-scroll timer
+                clearInterval(interval);
+                interval = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % totalSlides;
+                    updateCarousel();
+                }, 5000);
+            });
+        });
+
+        // Initialize first indicator as active
+        indicators[0].classList.add('active');
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+            const answer = button.nextElementSibling;
+            const icon = button.querySelector('i');
+
+            answer.classList.toggle('hidden');
+            icon.classList.toggle('rotate-180');
+        });
+    });
+</script>
+{% endblock %}

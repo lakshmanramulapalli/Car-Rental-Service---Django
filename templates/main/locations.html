@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Locations Hero -->
+<section class="bg-blue-900 text-white py-20">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Locations</h1>
+        <p class="text-xl">Serving major cities across India with premium car rental services</p>
+    </div>
+</section>
+
+<!-- Locations List -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for location in locations %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-4">{{ location.city }}</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt mr-2 text-blue-600"></i> {{ location.address }}</p>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-phone mr-2 text-blue-600"></i> {{ location.phone }}</p>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-envelope mr-2 text-blue-600"></i> {{ location.email }}</p>
+                    <a href="{% url 'contact' %}?location={{ location.city }}" class="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">Contact This Location</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Coverage Map -->
+<section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Our Coverage Area</h2>
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <img src="{% static 'image/Coverage_Ind.png' %}" alt="India Coverage Map" class="w-full h-auto rounded-lg" style="width: 500px" height="500px">
+            <div class="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <div class="bg-blue-100 p-3 rounded-lg text-center">
+                    <i class="fas fa-car text-blue-600 text-2xl mb-2"></i>
+                    <p class="font-bold">Mumbai</p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-lg text-center">
+                    <i class="fas fa-car text-blue-600 text-2xl mb-2"></i>
+                    <p class="font-bold">Delhi</p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-lg text-center">
+                    <i class="fas fa-car text-blue-600 text-2xl mb-2"></i>
+                    <p class="font-bold">Bangalore</p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-lg text-center">
+                    <i class="fas fa-car text-blue-600 text-2xl mb-2"></i>
+                    <p class="font-bold">Hyderabad</p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-lg text-center">
+                    <i class="fas fa-car text-blue-600 text-2xl mb-2"></i>
+                    <p class="font-bold">Chennai</p>
+                </div>
+                <div class="bg-blue-100 p-3 rounded-lg text-center">
+                    <i class="fas fa-car text-blue-600 text-2xl mb-2"></i>
+                    <p class="font-bold">Kolkata</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Expansion Announcement -->
+<section class="py-16 bg-blue-800 text-white">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-6">Coming Soon to More Cities!</h2>
+        <p class="text-xl mb-8 max-w-3xl mx-auto">We're expanding our services to more cities across India. Stay tuned for updates on our new locations.</p>
+        <a href="{% url 'contact' %}" class="inline-block bg-white text-blue-800 font-bold py-3 px-6 rounded-lg hover:bg-gray-200 transition duration-300">Request Your City</a>
+    </div>
+</section>
+{% endblock %}

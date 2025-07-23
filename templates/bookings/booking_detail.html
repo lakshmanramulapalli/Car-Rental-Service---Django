@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="bg-blue-900 text-white py-20">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2">Booking #{{ booking.id }}</h1>
+        <div class="flex items-center">
+            <span class="px-2 py-1 rounded-full text-sm
+                {% if booking.status == 'confirmed' %}bg-green-100 text-green-800
+                {% elif booking.status == 'pending' %}bg-yellow-100 text-yellow-800
+                {% elif booking.status == 'cancelled' %}bg-red-100 text-red-800
+                {% else %}bg-blue-100 text-blue-800{% endif %}">
+                {{ booking.get_status_display }}
+            </span>
+        </div>
+    </div>
+</section>
+
+<section class="py-16">
+    <div class="container mx-auto px-4 max-w-4xl">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <!-- Booking Header -->
+            <div class="bg-gray-100 px-6 py-4 border-b">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-bold">Booking Details</h2>
+                        <p class="text-gray-600">Created on {{ booking.created_at|date:"F j, Y" }}</p>
+                    </div>
+                    <div>
+                        <span class="font-bold text-lg">₹{{ booking.total_price }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Content -->
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <!-- Car Details -->
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Car Information</h3>
+                        <div class="flex items-start mb-4">
+                            <img src="{{ booking.car.image.url }}" alt="{{ booking.car.model }}" class="w-24 h-16 object-cover rounded mr-4">
+                            <div>
+                                <h4 class="font-bold">{{ booking.car.model }}</h4>
+                                <p class="text-gray-600">{{ booking.car.get_car_type_display }}</p>
+                                <p class="text-gray-600">{{ booking.car.seats }} Seats</p>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Daily Rate:</span>
+                                <span>₹{{ booking.car.price_per_day }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Rental Days:</span>
+                                <span>{{ booking.duration }} day{{ booking.duration|pluralize }}</span>
+                            </div>
+                            <div class="flex justify-between font-bold border-t pt-2 mt-2">
+                                <span>Total Price:</span>
+                                <span>₹{{ booking.total_price }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Rental Details -->
+                    <div>
+                        <h3 class="text-lg font-bold mb-4">Rental Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-gray-600">Pickup Location</p>
+                                <p class="font-medium">{{ booking.pickup_city }}</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-gray-600">Pickup Date</p>
+                                    <p class="font-medium">{{ booking.start_date|date:"F j, Y" }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-600">Return Date</p>
+                                    <p class="font-medium">{{ booking.end_date|date:"F j, Y" }}</p>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-gray-600">Booking Status</p>
+                                <p class="font-medium">
+                                    <span class="px-2 py-1 rounded-full text-xs 
+                                        {% if booking.status == 'confirmed' %}bg-green-100 text-green-800
+                                        {% elif booking.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                        {% elif booking.status == 'cancelled' %}bg-red-100 text-red-800
+                                        {% else %}bg-blue-100 text-blue-800{% endif %}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Customer Information -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-bold mb-4">Customer Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-gray-600">Full Name</p>
+                            <p class="font-medium">{{ booking.user.get_full_name }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Email</p>
+                            <p class="font-medium">{{ booking.user.email }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Phone</p>
+                            <p class="font-medium">{{ booking.user.phone|default:"Not provided" }}</p>
+                        </div>
+                        <div>
+                            <p class="text-gray-600">Address</p>
+                            <p class="font-medium">
+                                {{ booking.user.address|default:"Not provided" }}<br>
+                                {{ booking.user.city|default:"" }} {{ booking.user.pincode|default:"" }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div class="border-t pt-6">
+                    <div class="flex flex-col sm:flex-row justify-between items-center">
+                        <a href="{% url 'booking_list' %}" class="mb-4 sm:mb-0 inline-block border-2 border-blue-600 text-blue-600 font-bold py-2 px-6 rounded-lg hover:bg-blue-600 hover:text-white transition duration-300">Back to Bookings</a>
+                        
+                        <div class="space-x-2">
+                            {% if booking.status == 'pending' %}
+                            <a href="{% url 'cancel_booking' booking.id %}" class="inline-block bg-red-600 text-white py-2 px-6 rounded-lg hover:bg-red-700 transition duration-300">Cancel Booking</a>
+                            {% endif %}
+                            <a href="#" class="inline-block bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Print Invoice</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

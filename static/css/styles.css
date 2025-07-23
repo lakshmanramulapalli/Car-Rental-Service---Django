@@ -1,0 +1,25 @@
+/* Custom styles can be added here */
+.mobile-menu {
+    display: none;
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+/* Animation for FAQ */
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.faq-answer.show {
+    max-height: 500px; /* Adjust based on your content */
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 250px;
+  }
+}

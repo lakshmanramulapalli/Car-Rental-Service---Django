@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login | Luxury Car Rentals{% endblock %}
+
+{% block content %}
+<style>
+    .login-bg {
+        background-image: url("{% static 'image/login_bg.jpg' %}");
+        background-size: cover;
+        background-position: center;
+    }
+    .glass-bg {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(10px);
+    }
+</style>
+
+<div class="min-h-screen flex items-center justify-center login-bg py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 glass-bg p-10 rounded-2xl shadow-2xl border border-gray-200">
+        <div class="text-center">
+            <img src="{% static 'image/logo1.webp' %}" alt="Luxury Car Rentals" class="mx-auto h-24 w-auto">
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-800 tracking-wide">
+                Welcome Back
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Sign in to access your luxury car experience
+            </p>
+        </div>
+
+        <form class="mt-8 space-y-6" method="post" novalidate>
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 mb-4 rounded-lg">
+                    <div class="flex items-center">
+                        <svg class="h-5 w-5 text-red-500 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="..." clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-sm font-medium">
+                            {{ form.non_field_errors|striptags }}
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="space-y-5">
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="..." clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <input type="text" name="username" id="id_username" required
+                            class="pl-10 rounded-lg block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
+                            placeholder="Enter your username"
+                            value="{{ form.username.value|default:'' }}"
+                            autocomplete="username">
+                    </div>
+                    {% if form.username.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.username.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="id_password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="..." clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <input type="password" name="password" id="id_password" required
+                            class="pl-10 rounded-lg block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
+                            placeholder="Enter your password"
+                            autocomplete="current-password">
+                    </div>
+                    {% if form.password.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ form.password.errors|striptags }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="text-sm">
+                    {% url 'password_reset' as password_reset_url %}
+                    {% if password_reset_url %}
+                    <a href="{{ password_reset_url }}" class="font-medium text-yellow-600 hover:text-yellow-500 transition duration-200">
+                        Forgot password?
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 shadow-lg transform transition duration-150 hover:-translate-y-0.5">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <svg class="h-5 w-5 text-yellow-200 group-hover:text-yellow-100 transition duration-200" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="..." clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center text-sm text-gray-600">
+            {% url 'register' as register_url %}
+            {% if register_url %}
+            <p>Don't have an account?
+                <a href="{{ register_url }}" class="font-medium text-yellow-600 hover:text-yellow-500 transition duration-200">
+                    Create account
+                </a>
+            </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

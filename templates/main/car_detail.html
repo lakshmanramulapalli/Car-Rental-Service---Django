@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!-- Car Detail Hero -->
+<section class="bg-blue-900 text-white py-20">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2">{{ car.model }}</h1>
+        <div class="flex items-center">
+            <span class="bg-blue-100 text-blue-800 text-sm font-semibold px-2.5 py-0.5 rounded mr-2">{{ car.get_car_type_display }}</span>
+            <span class="text-xl">₹{{ car.price_per_day }}/day</span>
+        </div>
+    </div>
+</section>
+
+<!-- Car Details -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="flex flex-col lg:flex-row">
+            <!-- Car Images -->
+            <div class="lg:w-1/2 mb-10 lg:mb-0 lg:pr-10">
+                <div class="mb-6">
+                    <img src="{{ car.image.url }}" alt="{{ car.model }}" class="w-full rounded-lg shadow-xl">
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="bg-gray-200 h-24 rounded-lg"></div>
+                    <div class="bg-gray-200 h-24 rounded-lg"></div>
+                    <div class="bg-gray-200 h-24 rounded-lg"></div>
+                </div>
+            </div>
+
+            <!-- Car Info -->
+            <div class="lg:w-1/2">
+                <h2 class="text-3xl font-bold mb-6">Car Details</h2>
+
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-blue-600 text-xl mb-2">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <h3 class="font-bold">Model</h3>
+                        <p class="text-gray-600">{{ car.model }}</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-blue-600 text-xl mb-2">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="font-bold">Seating Capacity</h3>
+                        <p class="text-gray-600">{{ car.seats }} Persons</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-blue-600 text-xl mb-2">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <h3 class="font-bold">Type</h3>
+                        <p class="text-gray-600">{{ car.get_car_type_display }}</p>
+                    </div>
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <div class="text-blue-600 text-xl mb-2">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
+                        <h3 class="font-bold">Price</h3>
+                        <p class="text-gray-600">₹{{ car.price_per_day }}/day</p>
+                    </div>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4">Description</h3>
+                    <p class="text-gray-700">{{ car.description }}</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4">Features</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Air Conditioning</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Bluetooth</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Navigation</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Sunroof</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Leather Seats</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-check text-green-500 mr-2"></i>
+                            <span>Heated Seats</span>
+                        </div>
+                    </div>
+                </div>
+
+                {% if not car.is_available %}
+                <div class="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-exclamation-circle text-yellow-500"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-yellow-700">This car is currently unavailable for booking. Please check back later or contact us for similar options.</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Form -->
+<section class="py-16 bg-gray-100">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+            <h2 class="text-3xl font-bold mb-6">Book This Car</h2>
+
+            {% if not user.is_authenticated %}
+            <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-info-circle text-blue-500"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-blue-700">You need to <a href="{% url 'login' %}?next={% url 'car_detail' car.id %}" class="font-bold underline">login</a> or <a href="{% url 'register' %}" class="font-bold underline">register</a> to book this car.</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" {% if not user.is_authenticated %}class="opacity-50"{% endif %}>
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        {{ form.pickup_city|as_crispy_field }}
+                    </div>
+                    <div>
+                        {{ form.start_date|as_crispy_field }}
+                    </div>
+                    <div>
+                        {{ form.end_date|as_crispy_field }}
+                    </div>
+                    <div class="flex items-end">
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition duration-300" {% if not user.is_authenticated or not car.is_available %}disabled{% endif %}>
+                            Book
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            {% if car.is_available %}
+            <div class="mt-8">
+                <h3 class="text-xl font-bold mb-4">Pricing Estimate</h3>
+                <div class="bg-gray-100 p-4 rounded-lg">
+                    <div class="flex justify-between mb-2">
+                        <span>Base Price (₹{{ car.price_per_day }}/day)</span>
+                        <span>₹{{ car.price_per_day }}</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span>Estimated Duration</span>
+                        <span>1 day</span>
+                    </div>
+                    <div class="border-t border-gray-300 my-2 pt-2 font-bold flex justify-between">
+                        <span>Estimated Total</span>
+                        <span>₹{{ car.price_per_day }}</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">* Final price will be calculated based on your selected dates</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Similar Cars -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Similar Cars</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for similar_car in similar_cars %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <img src="{{ similar_car.image.url }}" alt="{{ similar_car.model }}" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">{{ similar_car.model }}</h3>
+                    <div class="flex justify-between mb-4">
+                        <span class="text-gray-600">{{ similar_car.get_car_type_display }}</span>
+                        <span class="font-bold">₹{{ similar_car.price_per_day }}/day</span>
+                    </div>
+                    <p class="text-gray-600 mb-4">{{ similar_car.description|truncatewords:15 }}</p>
+                    <a href="{% url 'car_detail' similar_car.id %}" class="block text-center bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300">View Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

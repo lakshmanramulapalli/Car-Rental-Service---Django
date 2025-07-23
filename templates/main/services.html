@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Services Hero -->
+<section class="bg-blue-900 text-white py-20">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
+        <p class="text-xl">Comprehensive car rental solutions for all your needs</p>
+    </div>
+</section>
+
+<!-- All Services -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for service in services %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition duration-300">
+                <div class="p-6">
+                    <div class="text-blue-600 text-4xl mb-4">
+                        <i class="{{ service.icon_class }}"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">{{ service.title }}</h3>
+                    <p class="text-gray-600">{{ service.description }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Service Highlights -->
+<section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">Service Highlights</h2>
+        
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold mb-6 text-blue-800">Wedding Car Rentals</h3>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-6 md:mb-0 md:pr-8">
+                    <p class="text-gray-700 mb-4">Make your special day even more memorable with our premium wedding car collection. We offer a range of luxury vehicles perfect for the bride and groom's arrival.</p>
+                    <ul class="text-gray-700 list-disc pl-5 mb-4">
+                        <li class="mb-2">Decorated cars with floral arrangements</li>
+                        <li class="mb-2">Professional chauffeurs in formal attire</li>
+                        <li class="mb-2">Flexible rental durations</li>
+                        <li>Multiple car options for the wedding party</li>
+                    </ul>
+                    <a href="{% url 'contact' %}" class="inline-block bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Enquire Now</a>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Wedding Car" class="w-full rounded-lg shadow-xl">
+                </div>
+            </div>
+        </div>
+        
+        <div class="mb-12">
+            <h3 class="text-2xl font-bold mb-6 text-blue-800">Corporate Travel</h3>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-6 md:mb-0 order-2 md:order-1">
+                    <img src="{% static 'image/Corparate_img.jpg' %}" alt="Corporate Travel" class="w-full rounded-lg shadow-xl">
+                </div>
+                <div class="md:w-1/2 md:pl-8 order-1 md:order-2">
+                    <p class="text-gray-700 mb-4">Impress your clients and partners with our premium corporate car rental services. We provide reliable transportation for business meetings, airport transfers, and corporate events.</p>
+                    <ul class="text-gray-700 list-disc pl-5 mb-4">
+                        <li class="mb-2">Discreet and professional service</li>
+                        <li class="mb-2">Punctual and reliable chauffeurs</li>
+                        <li class="mb-2">Corporate billing options available</li>
+                        <li>Customized packages for long-term rentals</li>
+                    </ul>
+                    <a href="{% url 'contact' %}" class="inline-block bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Enquire Now</a>
+                </div>
+            </div>
+        </div>
+        
+        <div>
+            <h3 class="text-2xl font-bold mb-6 text-blue-800">Special Events</h3>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-6 md:mb-0 md:pr-8">
+                    <p class="text-gray-700 mb-4">Make a statement at your next special event with our luxury car rentals. Perfect for anniversaries, birthdays, graduations, and other celebrations.</p>
+                    <ul class="text-gray-700 list-disc pl-5 mb-4">
+                        <li class="mb-2">Wide selection of luxury and classic cars</li>
+                        <li class="mb-2">Flexible rental periods</li>
+                        <li class="mb-2">Optional chauffeur services</li>
+                        <li>Special decorations available</li>
+                    </ul>
+                    <a href="{% url 'contact' %}" class="inline-block bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300">Enquire Now</a>
+                </div>
+                <div class="md:w-1/2">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Special Events" class="w-full rounded-lg shadow-xl">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
